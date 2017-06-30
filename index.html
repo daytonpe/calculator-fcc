@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Calculator (PD)</title>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="style.css" type="text/css" />
+	</head>
+
+	<body>
+
+		<script>
+
+		function clearText(){
+			displayText = "";
+		}
+
+		function clearEquation(){
+			activeEquation = "";
+		}
+
+			var activeEquation ="";
+			var displayText ="";
+
+			$(document).ready(function() {
+
+				//NUMBERS
+
+				$('#btn1').on('click', function() {
+					displayText = displayText.concat('1');
+					$("#outputText").text(displayText);
+					activeEquation=activeEquation.concat('1');
+				});
+
+				$('#btn2').on('click', function() {
+					displayText = displayText.concat('2');
+					$("#outputText").text('2');
+					activeEquation=activeEquation.concat('2');
+				});
+
+				$('#btn3').on('click', function() {
+					displayText = displayText.concat('3');
+					$("#outputText").text('3');
+					activeEquation=activeEquation.concat('3');
+				});
+
+				$('#btn4').on('click', function() {
+					displayText = displayText.concat('4');
+					$("#outputText").text('4');
+					activeEquation=activeEquation.concat('4');
+				});
+
+				$('#btn5').on('click', function() {
+					displayText = displayText.concat('5');
+					$("#outputText").text('5');
+					activeEquation=activeEquation.concat('5');
+				});
+
+				$('#btn6').on('click', function() {
+					displayText = displayText.concat('6');
+					$("#outputText").text('6');
+					activeEquation=activeEquation.concat('6');
+				});
+
+				$('#btn7').on('click', function() {
+					displayText = displayText.concat('7');
+					$("#outputText").text('7');
+					activeEquation=activeEquation.concat('7');
+				});
+
+				$('#btn8').on('click', function() {
+					displayText = displayText.concat('8');
+					$("#outputText").text('8');
+					activeEquation=activeEquation.concat('8');
+				});
+
+				$('#btn9').on('click', function() {
+					displayText = displayText.concat('9');
+					$("#outputText").text('9');
+					activeEquation=activeEquation.concat('9');
+					console.log(activeEquation);
+				});
+
+				$('#btn0').on('click', function() {
+					$("#outputText").text('0');
+					activeEquation=activeEquation.concat('0');
+				});
+
+
+				// OPERATIONS
+
+				$('#btnAdd').on('click', function() {
+					clearText();
+					activeEquation=activeEquation.concat('+');
+					console.log(activeEquation);
+				});
+
+				$('#btnSubtract').on('click', function() {
+					clearText();
+					activeEquation=activeEquation.concat('-');
+				});
+
+				$('#btnDivide').on('click', function() {
+					clearText();
+					activeEquation=activeEquation.concat('/');
+				});
+
+				$('#btnMultiply').on('click', function() {
+					clearText();
+					activeEquation=activeEquation.concat('*');
+					console.log(activeEquation);
+				});
+
+				$('#btnNegative').on('click', function() {
+					clearText();
+					activeEquation=activeEquation.concat('*(-1)');
+					$("#outputText").text(eval(activeEquation));
+				});
+
+				$('#btnEnter').on('click', function() {
+					clearText();
+					$("#outputText").text(eval(activeEquation));
+					console.log(activeEquation);
+				});
+
+				$('#btnC').on('click', function() {
+					clearEquation();
+					clearText();
+					$("#outputText").text('');
+				});
+
+
+			});
+
+		</script>
+
+		<div id="main" class="container">	
+			<div class="row" id="outputWindow">
+				<h1 id="outputText"></h1>
+			</div>
+			<div class="row">
+				<button id="btnC" type="button" class="btn btnGrey">C</button>
+				<button id="btnNegative" type="button" class="btn btnGrey">+/-</button>
+				<button id="btnPercent" type="button" class="btn btnGrey">%</button>
+				<button id="btnDivide" type="button" class="btn btnOrange">&divide;</button>
+			</div>
+			<div class="row">				
+				<button id="btn7" type="button" class="btn">7</button>								
+				<button id="btn8" type="button" class="btn">8</button>								
+				<button id="btn9" type="button" class="btn">9</button>								
+				<button id="btnMultiply" type="button" class="btn btnOrange">&times;</button>
+			</div>
+			<div class="row">				
+				<button id="btn4" type="button" class="btn">4</button>								
+				<button id="btn5" type="button" class="btn">5</button>								
+				<button id="btn6" type="button" class="btn">6</button>								
+				<button id="btnSubtract" type="button" class="btn btnOrange">-</button>				
+			</div>
+			<div class="row">				
+				<button id="btn1" type="button" class="btn">1</button>								
+				<button id="btn2" type="button" class="btn">2</button>								
+				<button id="btn3" type="button" class="btn">3</button>								
+				<button id="btnAdd" type="button" class="btn btnOrange">+</button>				
+			</div>
+			<div class="row">				
+				<button id="btn0" type="button" class="btn">0</button>
+				<button id="btnDot" type="button" class="btn">.</button>								
+				<button id="btnEnter" type="button" class="btn btnOrange">=</button>				
+			</div>
+		</div>
+		<p id="credit">Coded by Pat Dayton</p>
+
+	</body>
+
+</html>

@@ -1,0 +1,72 @@
+*{
+	font-family: 'Source Sans Pro', sans-serif;
+}
+body{
+	background-color: #4a4a4a;
+	margin-top: 15em;
+}
+
+button{
+}
+
+#main{
+	width: 200px;
+}
+
+.btn{
+	border-radius: 0px;
+	border: 1px solid black;
+	font-size: 1.5em;
+	font-weight: 300;
+	width: 25%;
+	background-color: #F2F2F2;
+	margin-left: -4px;
+	margin-bottom: -1px;
+}
+
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: none; 
+    outline: none; 
+    outline-offset: none;
+}
+
+.btnOrange{
+	background-color: #F27405;
+}
+
+.btnGrey{
+	background-color: #BABABA;
+}
+
+#btn0{
+	width: 50%;
+	margin-right: -1px;
+	text-align: left;
+	padding-left: 19px;
+}
+
+#btnEnter{
+	margin-left: -5px;
+}
+
+#outputWindow{
+	margin-left: -19px;
+  margin-right: -7px;
+	background-color: black;
+	text-align: right;
+	height: 66px;
+}
+
+#outputText{
+  margin-bottom: 0px;
+  margin-top: 25px;
+  padding-right: 15px;
+  font-weight: 300;
+  color: white;
+}
+
+
+#credit{
+	margin-top: 150px;
+	text-align: center;
+}
