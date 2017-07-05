@@ -179,6 +179,7 @@
 				$('#btnAdd').on('click', function() {
 					handleEndingPeriod()
 					clearText();
+					continueChain();
 					activeEquation=activeEquation.concat('+');
 					console.log(activeEquation);
 				});
@@ -186,6 +187,7 @@
 				$('#btnSubtract').on('click', function() {
 					handleEndingPeriod()
 					clearText();
+					continueChain();
 					activeEquation=activeEquation.concat('-');
 					console.log(activeEquation);
 				});
@@ -193,6 +195,7 @@
 				$('#btnDivide').on('click', function() {
 					handleEndingPeriod()
 					clearText();
+					continueChain();
 					activeEquation=activeEquation.concat('/');
 					console.log(activeEquation);
 				});
@@ -200,6 +203,7 @@
 				$('#btnMultiply').on('click', function() {
 					handleEndingPeriod()
 					clearText();
+					continueChain();
 					activeEquation=activeEquation.concat('*');
 					console.log(activeEquation);
 				});
@@ -207,6 +211,7 @@
 				$('#btnNegative').on('click', function() {
 					handleEndingPeriod()
 					clearText();
+					continueChain();
 					activeEquation=activeEquation.concat('*(-1)');
 					evaluate();
 					console.log(activeEquation);
@@ -215,6 +220,7 @@
 				$('#btnPercent').on('click', function() {
 					handleEndingPeriod()
 					clearText();
+					continueChain();
 					activeEquation=activeEquation.concat('/100');
 					evaluate();
 					console.log(activeEquation);
