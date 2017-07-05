@@ -17,115 +17,213 @@
 
 		<script>
 
-		function clearText(){
-			displayText = "";
-		}
+			var activeEquation ="0";
+			var displayText ="0";
 
-		function clearEquation(){
-			activeEquation = "";
-		}
+			function clearText(){
+				displayText = "";
+			}
 
-			var activeEquation ="";
-			var displayText ="";
+			function clearEquation(){
+				activeEquation = "";
+			}
+
+			function evaluate(){
+				// ??? This needs work to keep it to a certain number of digits or less
+				$("#outputText").text(Math.round(eval(activeEquation)*100000)/100000);
+				// 'c' is a marker for chain. After evaluate() is called, if you hit 
+				// another number, we have a flag to start a new activeEquation.
+				// If you hit an operation, flag tells to simply add to active equation.
+				activeEquation = eval(activeEquation).toString() + 'c';
+			}
+
+			function handleZero(){
+				if (displayText == '0') {
+					activeEquation = activeEquation.slice(0, -1);
+					displayText = '';
+				}
+			}
+
+			// prevent from doing something like 5./6 which doesn't work with eval.
+			// this function checks for end period when an operation button is pushed (*,/,+,-)
+			function handleEndingPeriod(){
+				if (displayText[displayText.length-1] == '.') {
+					activeEquation = activeEquation.slice(0, -1);
+				}
+			}
+
+			// breakChain() prevents concatting new numbers to an evaluated answer
+			// rather than starting a new chain when necessary
+			function breakChain(){
+				activeEquation[activeEquation.length-1]
+				if (activeEquation[activeEquation.length-1] == 'c') {
+					activeEquation = "";
+					displayText = ""
+				}
+			}
+
+			//continueChain() allows the chaining of operations after evaluation is run
+			function continueChain(){
+				if (activeEquation[activeEquation.length-1] == 'c') {
+					activeEquation = activeEquation.slice(0, -1);
+				}
+			}
+
 
 			$(document).ready(function() {
 
 				//NUMBERS
 
 				$('#btn1').on('click', function() {
+					handleZero();
+					breakChain();
 					displayText = displayText.concat('1');
 					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('1');
+					console.log(activeEquation);
 				});
 
 				$('#btn2').on('click', function() {
+					handleZero();
+					breakChain();
 					displayText = displayText.concat('2');
-					$("#outputText").text('2');
+					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('2');
+					console.log(activeEquation);
 				});
 
 				$('#btn3').on('click', function() {
+					handleZero();
+					breakChain();
 					displayText = displayText.concat('3');
-					$("#outputText").text('3');
+					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('3');
+					console.log(activeEquation);
 				});
 
 				$('#btn4').on('click', function() {
+					handleZero();
+					breakChain();
 					displayText = displayText.concat('4');
-					$("#outputText").text('4');
+					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('4');
+					console.log(activeEquation);
 				});
 
 				$('#btn5').on('click', function() {
+					handleZero();
+					breakChain();
 					displayText = displayText.concat('5');
-					$("#outputText").text('5');
+					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('5');
+					console.log(activeEquation);
 				});
 
 				$('#btn6').on('click', function() {
+					handleZero();
+					breakChain();
 					displayText = displayText.concat('6');
-					$("#outputText").text('6');
+					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('6');
+					console.log(activeEquation);
 				});
 
 				$('#btn7').on('click', function() {
+					handleZero();
+					breakChain();
 					displayText = displayText.concat('7');
-					$("#outputText").text('7');
+					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('7');
+					console.log(activeEquation);
 				});
 
 				$('#btn8').on('click', function() {
+					handleZero();
+					breakChain();
 					displayText = displayText.concat('8');
-					$("#outputText").text('8');
+					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('8');
+					console.log(activeEquation);
 				});
 
 				$('#btn9').on('click', function() {
+					handleZero();
+					breakChain();
 					displayText = displayText.concat('9');
-					$("#outputText").text('9');
+					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('9');
 					console.log(activeEquation);
 				});
 
 				$('#btn0').on('click', function() {
-					$("#outputText").text('0');
+					handleZero();
+					breakChain();
+					displayText = displayText.concat('0');
+					$("#outputText").text(displayText);
 					activeEquation=activeEquation.concat('0');
+					console.log(activeEquation);
+				});
+
+				$('#btnDot').on('click', function() {
+					handleZero();
+					breakChain();
+					displayText = displayText.concat('.');
+					$("#outputText").text(displayText);
+					activeEquation=activeEquation.concat('.');
+					console.log(activeEquation);
 				});
 
 
 				// OPERATIONS
 
 				$('#btnAdd').on('click', function() {
+					handleEndingPeriod()
 					clearText();
 					activeEquation=activeEquation.concat('+');
 					console.log(activeEquation);
 				});
 
 				$('#btnSubtract').on('click', function() {
+					handleEndingPeriod()
 					clearText();
 					activeEquation=activeEquation.concat('-');
+					console.log(activeEquation);
 				});
 
 				$('#btnDivide').on('click', function() {
+					handleEndingPeriod()
 					clearText();
 					activeEquation=activeEquation.concat('/');
+					console.log(activeEquation);
 				});
 
 				$('#btnMultiply').on('click', function() {
+					handleEndingPeriod()
 					clearText();
 					activeEquation=activeEquation.concat('*');
 					console.log(activeEquation);
 				});
 
 				$('#btnNegative').on('click', function() {
+					handleEndingPeriod()
 					clearText();
 					activeEquation=activeEquation.concat('*(-1)');
-					$("#outputText").text(eval(activeEquation));
+					evaluate();
+					console.log(activeEquation);
+				});
+
+				$('#btnPercent').on('click', function() {
+					handleEndingPeriod()
+					clearText();
+					activeEquation=activeEquation.concat('/100');
+					evaluate();
+					console.log(activeEquation);
 				});
 
 				$('#btnEnter').on('click', function() {
+					handleEndingPeriod()
 					clearText();
-					$("#outputText").text(eval(activeEquation));
+					evaluate();
 					console.log(activeEquation);
 				});
 
@@ -141,37 +239,39 @@
 		</script>
 
 		<div id="main" class="container">	
-			<div class="row" id="outputWindow">
-				<h1 id="outputText"></h1>
-			</div>
-			<div class="row">
-				<button id="btnC" type="button" class="btn btnGrey">C</button>
-				<button id="btnNegative" type="button" class="btn btnGrey">+/-</button>
-				<button id="btnPercent" type="button" class="btn btnGrey">%</button>
-				<button id="btnDivide" type="button" class="btn btnOrange">&divide;</button>
-			</div>
-			<div class="row">				
-				<button id="btn7" type="button" class="btn">7</button>								
-				<button id="btn8" type="button" class="btn">8</button>								
-				<button id="btn9" type="button" class="btn">9</button>								
-				<button id="btnMultiply" type="button" class="btn btnOrange">&times;</button>
-			</div>
-			<div class="row">				
-				<button id="btn4" type="button" class="btn">4</button>								
-				<button id="btn5" type="button" class="btn">5</button>								
-				<button id="btn6" type="button" class="btn">6</button>								
-				<button id="btnSubtract" type="button" class="btn btnOrange">-</button>				
-			</div>
-			<div class="row">				
-				<button id="btn1" type="button" class="btn">1</button>								
-				<button id="btn2" type="button" class="btn">2</button>								
-				<button id="btn3" type="button" class="btn">3</button>								
-				<button id="btnAdd" type="button" class="btn btnOrange">+</button>				
-			</div>
-			<div class="row">				
-				<button id="btn0" type="button" class="btn">0</button>
-				<button id="btnDot" type="button" class="btn">.</button>								
-				<button id="btnEnter" type="button" class="btn btnOrange">=</button>				
+			<div id="iphone">
+				<div class="row" id="outputWindow">
+					<h1 id="outputText">0</h1>
+				</div>
+				<div class="row">
+					<button id="btnC" type="button" class="btn btnGrey">C</button>
+					<button id="btnNegative" type="button" class="btn btnGrey">+/-</button>
+					<button id="btnPercent" type="button" class="btn btnGrey">%</button>
+					<button id="btnDivide" type="button" class="btn btnOrange">&divide;</button>
+				</div>
+				<div class="row">				
+					<button id="btn7" type="button" class="btn">7</button>								
+					<button id="btn8" type="button" class="btn">8</button>								
+					<button id="btn9" type="button" class="btn">9</button>								
+					<button id="btnMultiply" type="button" class="btn btnOrange">&times;</button>
+				</div>
+				<div class="row">				
+					<button id="btn4" type="button" class="btn">4</button>								
+					<button id="btn5" type="button" class="btn">5</button>								
+					<button id="btn6" type="button" class="btn">6</button>								
+					<button id="btnSubtract" type="button" class="btn btnOrange">-</button>
+				</div>
+				<div class="row">				
+					<button id="btn1" type="button" class="btn">1</button>								
+					<button id="btn2" type="button" class="btn">2</button>								
+					<button id="btn3" type="button" class="btn">3</button>								
+					<button id="btnAdd" type="button" class="btn btnOrange">+</button>				
+				</div>
+				<div class="row">				
+					<button id="btn0" type="button" class="btn">0</button>
+					<button id="btnDot" type="button" class="btn">.</button>								
+					<button id="btnEnter" type="button" class="btn btnOrange">=</button>	
+				</div>
 			</div>
 		</div>
 		<p id="credit">Coded by Pat Dayton</p>

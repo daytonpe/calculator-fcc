@@ -2,7 +2,7 @@
 	font-family: 'Source Sans Pro', sans-serif;
 }
 body{
-	background-color: #4a4a4a;
+	background-color: white;
 	margin-top: 15em;
 }
 
@@ -32,6 +32,11 @@ button{
 
 .btnOrange{
 	background-color: #F27405;
+	color: white;
+}
+
+.btnOrange:hover, .btnOrange:active, .btnOrange:focus{
+	color: white;
 }
 
 .btnGrey{
@@ -46,7 +51,8 @@ button{
 }
 
 #btnEnter{
-	margin-left: -5px;
+	margin-left: -4px;
+	width: 44px;
 }
 
 #outputWindow{
@@ -63,8 +69,15 @@ button{
   padding-right: 15px;
   font-weight: 300;
   color: white;
+  max-width: 200px;
 }
 
+#iphone{
+	background-color: #1c1c1c;
+  padding: 38px 20px 57px 33px;
+  border-radius: 20px;
+  width: 200px;
+}
 
 #credit{
 	margin-top: 150px;
