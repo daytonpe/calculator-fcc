@@ -37,11 +37,24 @@
 				activeEquation = eval(activeEquation).toString() + 'c';
 			}
 
+			// allow 0 to show on default screen
+			// prevent '06' from showing when you hit 6
 			function handleZero(){
 				if (displayText == '0') {
 					activeEquation = activeEquation.slice(0, -1);
 					displayText = '';
 				}
+			}
+
+			// prevents from concatting an operation, like '+', to something like '9+'
+			function handleBadEndings(str){
+				if (/[\+\-\*\/]/.test(activeEquation[activeEquation.length-1])) {
+					// console.log(newOperation);
+					activeEquation = activeEquation.slice(0, -1);
+					activeEquation[activeEquation.length-1] = str;
+					// activeEquation = activeEquation.concat(str);
+				}
+				else console.log('flag');
 			}
 
 			// prevent from doing something like 5./6 which doesn't work with eval.
@@ -178,6 +191,7 @@
 
 				$('#btnAdd').on('click', function() {
 					handleEndingPeriod()
+					handleBadEndings('+')
 					clearText();
 					continueChain();
 					activeEquation=activeEquation.concat('+');
@@ -186,6 +200,7 @@
 
 				$('#btnSubtract').on('click', function() {
 					handleEndingPeriod()
+					handleBadEndings('-')
 					clearText();
 					continueChain();
 					activeEquation=activeEquation.concat('-');
@@ -194,6 +209,7 @@
 
 				$('#btnDivide').on('click', function() {
 					handleEndingPeriod()
+					handleBadEndings('/')
 					clearText();
 					continueChain();
 					activeEquation=activeEquation.concat('/');
@@ -202,6 +218,7 @@
 
 				$('#btnMultiply').on('click', function() {
 					handleEndingPeriod()
+					handleBadEndings('*')
 					clearText();
 					continueChain();
 					activeEquation=activeEquation.concat('*');
@@ -210,6 +227,7 @@
 
 				$('#btnNegative').on('click', function() {
 					handleEndingPeriod()
+					handleBadEndings('')
 					clearText();
 					continueChain();
 					activeEquation=activeEquation.concat('*(-1)');
@@ -218,7 +236,8 @@
 				});
 
 				$('#btnPercent').on('click', function() {
-					handleEndingPeriod()
+					handleEndingPeriod();
+					handleBadEndings('');
 					clearText();
 					continueChain();
 					activeEquation=activeEquation.concat('/100');
