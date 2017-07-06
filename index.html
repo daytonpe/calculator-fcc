@@ -19,6 +19,7 @@
 
 			var activeEquation ="0";
 			var displayText ="0";
+			var lastOp = "";
 
 			function clearText(str){
 				displayText = str;
@@ -29,11 +30,11 @@
 			}
 
 			function roundForView(flt){
-				if (flt>9999999 || /\d{8,}\./.test(flt)){ //8 digits before dot (big number)
+				if (Math.abs(flt)>9999999 || /\d{8,}\./.test(flt)){ //8 digits before dot (big number)
 
 					return flt.toExponential(4);
 
-				} else if (flt<.000001){ //six zeros before dot (small number)
+				} else if (Math.abs(flt)<.000001 && flt !=0){ //six zeros before dot (small number)
 					flt = flt.toPrecision(5);
 					return flt;
 
@@ -45,17 +46,52 @@
 				}
 			}
 
+			// highlight active operation in dark orange
+			function addOutline(str){
+				if (str == '+'){
+					clearOutlines()
+					$('#btnAdd').addClass('btnOutline');
+				} else if (str == '-'){
+					clearOutlines()
+					$('#btnSubtract').addClass('btnOutline');				
+				} else if (str == '*'){
+					clearOutlines()
+					$('#btnMultiply').addClass('btnOutline');				
+				} else if (str == '/'){
+					clearOutlines()
+					$('#btnDivide').addClass('btnOutline');			
+				}
+			}
+
+			//clears all outlines
+			function clearOutlines(){
+					$('#btnAdd').removeClass('btnOutline');
+					$('#btnSubtract').removeClass('btnOutline');
+					$('#btnMultiply').removeClass('btnOutline');
+					$('#btnDivide').removeClass('btnOutline');				
+			}
+
+			// reused code from: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+			function commify(str) {
+			  var parts = str.split(".");
+		    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		    return parts.join(".");
+			}			
+
 			function evaluate(){
 				if (activeEquation[activeEquation.length-1] == 'c') {
 					activeEquation = activeEquation.slice(0,-1);
 				}
 				// ??? This needs work to keep it to a certain number of digits or less
 				// $("#outputText").text(Math.round(eval(activeEquation)*100000)/100000);
-				$("#outputText").text(roundForView(eval(activeEquation)));
+				$("#outputText").text(commify(roundForView(eval(activeEquation)).toString()));
 
 				// 'c' is a marker for chain. After evaluate() is called, if you hit 
 				// another number, we have a flag to start a new activeEquation.
 				// If you hit an operation, flag tells to simply add to active equation.
+
+
+
 				activeEquation = eval(activeEquation).toString() + 'c';
 			}
 
@@ -71,6 +107,7 @@
 
 			// prevents from concatting an operation, like '+', to something like '9+'
 			function handleBadEndings(str){
+
 				if (/[\+\-\*\/]/.test(activeEquation[activeEquation.length-1])) {
 					activeEquation = activeEquation.slice(0, -1);
 					activeEquation[activeEquation.length-1] = str;
@@ -104,18 +141,22 @@
 
 			// Called when you hit a number button
 			function numBtn(str){
+				// clearOutlines();
 				handleZero();
 				breakChain();
 				//concat the new number IF it doesn't push the string outside the box
 				if(displayText.length<8){
 					displayText = displayText.concat(str);
 				}
-				$("#outputText").text(displayText);
+				$("#outputText").text(commify(displayText));
 				activeEquation=activeEquation.concat(str);
 				console.log(activeEquation);			
 			}
 
+			// Called when you hit an operation button
 			function opBtn(str){
+				clearOutlines();
+				addOutline(str);
 				handleEndingPeriod()
 				handleBadEndings(str)
 				evaluate();
@@ -125,10 +166,127 @@
 				console.log(activeEquation);
 			}
 
+			//Called when you hit enter key
+			function enterBtn(){
+				clearOutlines();
+				if (activeEquation[activeEquation.length-1] == 'c') {
+					activeEquation = activeEquation.slice(0, -1);
+					activeEquation=activeEquation.concat(lastOp);
+				}
+				handleEndingPeriod();
+				handleBadEndings('');
+				clearText('');
+
+				// Grab the last op
+				if (activeEquation.match(/([\+\-\/\*][^\+\-\/\*]*)$/) != null){
+					lastOp = activeEquation.match(/([\+\-\/\*][^\+\-\/\*]*)$/)[0];
+				} else lastOp='';
+
+				continueChain();
+				evaluate();
+				console.log(activeEquation);
+			}
+
 
 			$(document).ready(function() {
 
 				//NUMBERS
+
+				$(document).keypress(function(e){
+					// console.log(e.keyCode);
+					switch (e.keyCode) {
+						case 48: // 0
+							numBtn('0');
+							break;
+
+    		    case 49: // 1
+    		    	numBtn('1');
+    		    	break;
+
+    		    case 50: // 2
+    		    	numBtn('2');
+    		    	break;
+
+    		    case 51: // 3
+    		    	numBtn('3');
+    		    	break;
+
+    		    case 52: // 4
+    		    	numBtn('4');
+    		    	break;
+
+    		    case 53: // 5
+    		    	numBtn('5');
+    		    	break;
+
+    		    case 54: // 6
+    		    	numBtn('6');
+    		    	break;  	
+
+    		    case 55: // 7
+    		    	numBtn('7');
+    		    	break;
+
+    		    case 56: // 8
+    		    	numBtn('8');
+    		    	break;
+
+						case 42: // *
+    		    	opBtn('*');
+    		    	break;
+
+    		    case 57: // 9
+    		    	numBtn('9');
+    		    	break;
+
+    		    case 46: // .
+    		    	numBtn('.');
+    		    	break;
+
+    		    case 43:  // +
+    		    	opBtn('+');
+    		    	break;
+
+						case 45: // -
+							opBtn('-');
+    		    	break;
+
+    		    case 115: //s button to change sign
+    		    	opBtn('*(-1)');
+							evaluate();
+							console.log(activeEquation);
+    		    	break;
+
+    		    case 47: // divide
+    		    	opBtn('/');
+    		    	break;
+
+    		    case 37: //%
+    		    	opBtn('/100');
+							evaluate();
+							console.log(activeEquation);
+							break;
+
+    		    case 13: //enter button
+    		    	enterBtn();
+    		    	break;
+
+    		    case 61: //other enter button
+    		    	enterBtn();
+    		    	break;
+
+    		    case 99: //clear button
+		    		  clearEquation();
+		    		  clearOutlines();
+							clearText('0');
+							$("#outputText").text(displayText);
+							console.log(activeEquation);
+							break;
+
+						default:
+            	alert('This is an invalid key.');
+		        }   
+				});
 
 				$('#btn1').on('click', function() {numBtn('1');});
 				$('#btn2').on('click', function() {numBtn('2');});
@@ -141,7 +299,6 @@
 				$('#btn9').on('click', function() {numBtn('9');});
 				$('#btn0').on('click', function() {numBtn('0');});
 				$('#btnDot').on('click', function() {numBtn('.');});
-
 
 				// BASIC OPERATIONS
 
@@ -163,16 +320,10 @@
 					console.log(activeEquation);
 				});
 
-
 				// SPECIAL OPERATIONS
 
 				$('#btnEnter').on('click', function() {
-					handleEndingPeriod();
-					handleBadEndings('')
-					clearText('');
-					continueChain();
-					evaluate();
-					console.log(activeEquation);
+					enterBtn();
 				});
 
 				$('#btnC').on('click', function() {
