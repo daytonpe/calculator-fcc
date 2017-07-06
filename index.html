@@ -28,12 +28,31 @@
 				activeEquation = "0";
 			}
 
+			function roundForView(flt){
+				if (flt>9999999 || /\d{8,}\./.test(flt)){ //8 digits before dot (big number)
+
+					return flt.toExponential(4);
+
+				} else if (flt<.000001){ //six zeros before dot (small number)
+					flt = flt.toPrecision(5);
+					return flt;
+
+				} else { //numbers for which scinot is unnecessary
+
+					flt = flt.toString();
+					flt = flt.slice(0,8);
+					return parseFloat(flt);
+				}
+			}
+
 			function evaluate(){
 				if (activeEquation[activeEquation.length-1] == 'c') {
 					activeEquation = activeEquation.slice(0,-1);
 				}
 				// ??? This needs work to keep it to a certain number of digits or less
-				$("#outputText").text(Math.round(eval(activeEquation)*100000)/100000);
+				// $("#outputText").text(Math.round(eval(activeEquation)*100000)/100000);
+				$("#outputText").text(roundForView(eval(activeEquation)));
+
 				// 'c' is a marker for chain. After evaluate() is called, if you hit 
 				// another number, we have a flag to start a new activeEquation.
 				// If you hit an operation, flag tells to simply add to active equation.
@@ -48,6 +67,7 @@
 					displayText = '';
 				}
 			}
+
 
 			// prevents from concatting an operation, like '+', to something like '9+'
 			function handleBadEndings(str){
@@ -86,7 +106,10 @@
 			function numBtn(str){
 				handleZero();
 				breakChain();
-				displayText = displayText.concat(str);
+				//concat the new number IF it doesn't push the string outside the box
+				if(displayText.length<8){
+					displayText = displayText.concat(str);
+				}
 				$("#outputText").text(displayText);
 				activeEquation=activeEquation.concat(str);
 				console.log(activeEquation);			
